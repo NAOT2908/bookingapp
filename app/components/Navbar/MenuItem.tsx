@@ -11,7 +11,6 @@ const MenuItem: React.FC<MenuItemProps> = ({onclick,label}) => {
 
     return ( 
         <div 
-        
         onClick={onclick}
         className="
         px-4

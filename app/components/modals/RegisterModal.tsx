@@ -17,6 +17,7 @@ import Heading from '../Heading';
 import Input from '../inputs/Input';
 import { toast } from 'react-hot-toast'
 import Button from '../Button';
+import { signIn } from 'next-auth/react';
 
 const RegisterModal = () => {
     const registerModal = useRegisterModal();
@@ -43,6 +44,8 @@ const RegisterModal = () => {
         axios.post('/api/register', data)
             .then(() => {
                 registerModal.onClose();
+                loginModal.onOpen();
+                toast.success('Success!')
             })
             .catch((err) => {
                 toast.error('No No No'); 
@@ -52,6 +55,10 @@ const RegisterModal = () => {
             })
 
     }
+    const onToggle = useCallback(() => {
+        loginModal.onOpen();
+        registerModal.onClose();
+      }, [loginModal, registerModal])
     const bodyContent = (
         <div className='flex flex-col gap-4'>
             
@@ -92,22 +99,23 @@ const RegisterModal = () => {
                 outline
                 label='Continue with Google'
                 icon={FcGoogle}
-                onClick={() => {}}
+                onClick={() => signIn('google')}
             />
             <Button 
                 outline
                 label='Continue with GitHub'
                 icon={AiFillGithub}
-                onClick={() => {}}
+                onClick={() => signIn('github')}
             />
             <div className='text-neutral-500 text-center mt-4 font-light'>
                 <div className='flex text-center items-center flex-row justify-center gap-2'>
                     <div>
                         Already have an Account?
                     </div>
-                    <div className='text-blue-800 cursor-pointer hover:underline '>
+                    <span onClick={onToggle}
+                     className='text-blue-800 cursor-pointer hover:underline '>
                         Log in
-                    </div>
+                    </span>
                 </div>
             </div>
         </div>
